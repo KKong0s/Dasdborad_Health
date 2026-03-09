@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Social Media & Mental Health Dashboard</title>
   
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&family=Sarabun:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -13,30 +14,36 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: #000; /* ป้องกันขอบขาวก่อนโหลดเสร็จ */
+      background-color: #000;
     }
   </style>
 
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
-  <script crossorigin src="https://unpkg.com/prop-types/prop-types.min.js"></script>
-  <script crossorigin src="https://unpkg.com/recharts/umd/Recharts.js"></script>
-  
+  <!-- 1. ตั้งค่า Import Maps เพื่อดึง React และ Recharts ผ่าน ES Modules -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.2.0",
+      "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+      "recharts": "https://esm.sh/recharts@2.12.2"
+    }
+  }
+  </script>
+
+  <!-- 2. ดึง Babel มาแปลง JSX ให้ Browser เข้าใจ -->
   <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
   <div id="root"></div>
 
-  <script type="text/babel">
-    // ดึง Hooks จาก React Global Object แทนการ Import
-    const { useState, useMemo, useEffect, useRef, useCallback } = React;
-    
-    // ดึง Components จาก Recharts Global Object แทนการ Import
-    const {
+  <!-- 3. ใช้ data-type="module" เพื่อให้ใช้คำสั่ง import ได้ -->
+  <script type="text/babel" data-type="module">
+    // Import เครื่องมือต่างๆ แบบเดียวกับที่เขียนในโปรเจกต์ปกติ
+    import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
+    import { createRoot } from "react-dom/client";
+    import {
       BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
       PieChart, Pie, Cell, Legend
-    } = window.Recharts;
+    } from "recharts";
 
     // ── CSV PARSER ────────────────────────────────────────────────────────────
     const parseCSV = (text) => {
@@ -624,8 +631,8 @@
       );
     }
 
-    // Render App เข้าสู่ DOM
-    const root = ReactDOM.createRoot(document.getElementById('root'));
+    // Render ลง DOM ด้วย createRoot ของ React 18
+    const root = createRoot(document.getElementById('root'));
     root.render(<Dashboard />);
   </script>
 </body>
